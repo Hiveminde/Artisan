@@ -1,5 +1,5 @@
 import React from 'react'
-import User from './User'
+import User from '../models/User'
 
 class UsersNode extends React.Component {
 
@@ -8,7 +8,7 @@ class UsersNode extends React.Component {
     }
 
     async componentDidMount() {
-        this.setState({users: await User.findAll()})
+        this.setState({users: await User.read()})
     }
 
     render() {
@@ -36,9 +36,9 @@ class UserNode extends React.Component {
 
     async onSubmit() {
         try {
-            await this.state.user.save()
+            await this.state.user.create()
         } catch (error) {
-            // If beforeSave() validations fail
+            // If beforeCreate() validations fail
             this.state.error = error
         }
     }
@@ -61,14 +61,14 @@ class UserNode extends React.Component {
 
     async render() {
         return (
-            <form onSubmit={() => await this.onSubmit()}>
+            <form onSubmit={async () => await this.onSubmit()}>
                 <span>User:</span>
-                <Error message={this.state.error)}/>
+                <Error message={this.state.error}/>
                 {Object.keys(this.state.user).map(k =>
                     <div>
                         <label for={k}>{k.toUpperCase()}</label>
                         <input type="text" name={k} value={this.state.user[k]} onChange={(e) => this.onChange(e, k)}/>
-                        <button onClick={()=> await this.addFriend(user)}></button>
+                        <button onClick={async ()=> await this.addFriend(user)}></button>
                     </div>
                 )}
             </form>
