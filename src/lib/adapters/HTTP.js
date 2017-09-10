@@ -1,12 +1,13 @@
 import fetch from 'fetch'
 
 
-class HTTPAdapter {
+class HTTP {
 
-    constructor(options) {
-       this.baseRoute = `/${options.klass}`
+    constructor(config) {
+        this.klass = config.klass
+        this.baseRoute = `/${this.klass}`
     }
- 
+
     async create(dataArray) {
         return await (await fetch(this.baseRoute, {
             method: 'POST',
@@ -38,7 +39,10 @@ class HTTPAdapter {
     }
 
     _serializeParams(obj) {
-        return '?'+Object.keys(obj).reduce(function(a,k){a.push(k+'='+encodeURIComponent(obj[k]));return a},[]).join('&')
+        return ('?' + Object.keys(obj).reduce((a, k) => {
+            a.push(k+'='+encodeURIComponent(obj[k]))
+            return a
+        }).join('&'))
     }
 
 }

@@ -1,21 +1,33 @@
 export class Artisan {
 
-    constructor(config) {
-        this.klass = config.klass
-        if (window) {
-            if (config.adapters.indexOf('WebSocketAdapter') >= 0) {
-                // TODO: Unfortunately, this would be required on every User instance init
-                this.adapter = new require('WebSocketAdapter')()
-            }
+    static get types() {
+        return {
+            String: String
         }
     }
+
+    static environment() {
+        return (window ? 'CLIENT' : (process ? 'SERVER' : 'UNKOWN'))
+    }
+
+
+
+    constructor(config) {
+        this.constructor.adapter = (
+            this.constructor.adapter ||
+            new require(`adapters/${config.adapters[Artisan.environment().toLowerCase()]}`)({
+                klass: this.constructor.name
+            })
+        )
+    }
+
 
     async create(data) {
         if (this.beforeCreate) {
             await this.beforeCreate(data)
         }
 
-        let instanceData = await this.adapter.create(this.klass, data)
+        let instanceData = await this.constructor.adapter.create(data)
 
         if (this.afterCreate) {
             await this.afterCreate(instanceData)
@@ -23,14 +35,14 @@ export class Artisan {
 
         return instanceData
     }
-    
-    
+
+
     async read(query) {
         if (this.beforeRead) {
             await this.beforeRead(query)
         }
 
-        let instanceData = await this.adapter.read(this.klass, query)
+        let instanceData = await this.constructor.adapter.read(query)
 
         if (this.afterRead) {
             await this.afterRead(instanceData)
@@ -38,13 +50,14 @@ export class Artisan {
 
         return instanceData
     }
-    
+
+
     async update(query, data) {
         if (this.beforeUpdate) {
-            await this.beforeUpdate(query)
+            await this.beforeUpdate(query, data)
         }
 
-        let instanceData = await this.adapter.update(this.klass, query, data)
+        let instanceData = await this.constructor.adapter.update(query, data)
 
         if (this.afterUpdate) {
             await this.afterUpdate(instanceData)
@@ -52,14 +65,14 @@ export class Artisan {
 
         return instanceData
     }
-    
-    
+
+
     async delete(query) {
         if (this.beforeDelete) {
             await this.beforeDelete(query)
         }
 
-        let instanceData = await this.adapter.delete(this.klass, query)
+        let instanceData = await this.constructor.adapter.delete(query)
 
         if (this.afterDelete) {
             await this.afterDelete(instanceData)
