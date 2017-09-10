@@ -5,7 +5,7 @@ class {{scaffold.name}} {
 
     constructor(config) {
         Object.assign(this, config)
-        this.{{scaffold.protocol}} = {{scaffold.dependency}}
+        this.{{scaffold.protocol}} = {{scaffold.dependency}}.{{scaffold.connection}}
     }
 
     async create(dataArray) {
