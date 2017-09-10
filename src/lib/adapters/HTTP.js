@@ -4,7 +4,7 @@ import fetch from 'fetch'
 class HTTP {
 
     constructor(config) {
-        this.klass = config.klass
+        Object.assign(this, config)
         this.baseRoute = `/${this.klass}`
     }
 

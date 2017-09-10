@@ -1,0 +1,27 @@
+import {{scaffold.dependency}} from '{{scaffold.dependency}}'
+
+
+class {{scaffold.name}} {
+
+    constructor(config) {
+        Object.assign(this, config)
+        this.{{scaffold.protocol}} = {{scaffold.dependency}}.{{scaffold.connection}}
+    }
+
+    async create(dataArray) {
+        return await this.{{scaffold.protocol}}.{{scaffold.crud.create}}(dataArray)
+    }
+
+    async read(queryArray) {
+        return await this.{{scaffold.protocol}}.{{scaffold.crud.read}}(queryArray)
+    }
+
+    async update(queryArray, dataArray) {
+        return await this.{{scaffold.protocol}}.{{scaffold.crud.update}}(queryArray, dataArray)
+    }
+
+    async delete(queryArray) {
+        return await this.{{scaffold.protocol}}.{{scaffold.crud.delete}}(queryArray)
+    }
+
+}

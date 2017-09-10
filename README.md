@@ -29,10 +29,10 @@ An unopinionated model layer / ORM for full-stack Javascript Applications (web, 
 3. Has a full active record style set of default methods that can be applied to any model.  Feel free to change the method names to something that sounds more java-scripty.  Just getting the idea across.  Each method should return a promise by default.  Ideally some syntactic sugar to covert these to sycnh functions using async/await would be helpful, like a decorator or chained method.
 1. Adapters: Query Methods
     - Standard
-        - `create(klass, [{data}])`
-        - `read(klass, [{queries}])`
-        - `update(klass, [{queries}], [{data}])`
-        - `delete(klass, [{queries}], [{data}])`
+        - `create([{data}])`
+        - `read([{queries}])`
+        - `update([{queries}], [{data}])`
+        - `delete([{queries}], [{data}])`
     - Proposed
 2. Model: Query Methods 
     - Standard
