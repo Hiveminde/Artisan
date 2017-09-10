@@ -1,12 +1,13 @@
 import mongoose from 'mongoose'
 
 
-class MongooseAdapter {
+class Mongo {
 
-    constructor(options) {
-       this.collection = mongoose.connections[0].collections[options.klass]
+    constructor(config) {
+        this.klass = config.klass
+        this.collection = mongoose.connections[0].collections[this.klass]
     }
- 
+
     async create(dataArray) {
         return await this.collection.create(dataArray)
     }

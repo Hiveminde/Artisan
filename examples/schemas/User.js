@@ -5,13 +5,13 @@ export class User extends Artisan {
 
     constructor(attrs) {
         super({
-            adapters: [
-                'WebSocketAdapter',
-                'MongoAdapter'
-            ],
+            adapters: {
+                client: 'Socket',
+                server: 'Mongo'
+            },
             schema: {
-                username: Artisan.String,
-                email: Artisan.String
+                username: Artisan.types.String,
+                email: Artisan.types.String
             }
         })
 
