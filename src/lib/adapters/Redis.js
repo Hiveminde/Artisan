@@ -4,7 +4,7 @@ import redis from 'redis'
 class Redis {
 
     constructor(config) {
-        this.klass = config.klass
+        Object.assign(this, config)
         this.collection = redis.connection().subscribe(config.klass)
     }
 

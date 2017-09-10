@@ -4,7 +4,7 @@ import socketio from 'socketio'
 class Socket {
 
     constructor(config) {
-        this.klass = config.klass
+        Object.assign(this, config)
         this.sockets = socketio.connection().subscribe(this.klass)
     }
 

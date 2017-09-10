@@ -4,7 +4,7 @@ import postgres from 'postgres'
 class Postgres {
 
     constructor(config) {
-        this.klass = config.klass
+        Object.assign(this, config)
         this.table = postgres.connection().tables[this.klass]
     }
 

@@ -4,7 +4,7 @@ import mongoose from 'mongoose'
 class Mongo {
 
     constructor(config) {
-        this.klass = config.klass
+        Object.assign(this, config)
         this.collection = mongoose.connections[0].collections[this.klass]
     }
 
