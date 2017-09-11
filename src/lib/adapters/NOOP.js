@@ -9,11 +9,11 @@ class NOOP {
     }
 
     async read(queryArray) {
-        return await [{username: 'twincharged', email: 'joe@hiveminde.com'}]
+        return await queryArray
     }
 
     async update(queryArray, dataArray) {
-        return await [{username: 'joe', email: 'joe@hiveminde.com'}]
+        return await queryArray.map((q, i) => Object.assign(q, dataArray[i]))
     }
 
     async delete(queryArray) {
