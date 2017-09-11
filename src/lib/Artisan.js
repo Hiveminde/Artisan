@@ -1,84 +1,118 @@
-export class Artisan {
+module.exports = class Artisan {
 
     static get types() {
         return {
-            String: String
+            String: String,
+            Boolean: Boolean
         }
     }
 
     static environment() {
-        return (window ? 'CLIENT' : (process ? 'SERVER' : 'UNKOWN'))
+        return (
+            typeof window !== 'undefined' ?
+                'CLIENT' :
+            (typeof process !== 'undefined' ?
+                'SERVER'
+            : 'UNKOWN')
+        )
     }
 
 
 
     constructor(config) {
-        this.constructor.adapter = (
-            this.constructor.adapter ||
-            new require(`adapters/${config.adapters[Artisan.environment().toLowerCase()]}`)({
+        if (!this.constructor.adapter) {
+            let adapter = require(`./adapters/${config.adapters[Artisan.environment().toLowerCase()]}`)
+            this.constructor.adapter = new adapter({
                 klass: this.constructor.name
             })
-        )
+        }
     }
 
 
-    async create(data) {
-        if (this.beforeCreate) {
-            await this.beforeCreate(data)
+
+    async create() {
+        let instance = await this.constructor.create(this)
+        Object.assign(this, instance)
+    }
+
+    static async create(data) {
+        let instance = data.constructor === this ? data : new this(data)
+        if (instance.beforeCreate) {
+            await instance.beforeCreate()
         }
 
-        let instanceData = await this.constructor.adapter.create(data)
+        instance = new this(await this.adapter.create(data))
 
-        if (this.afterCreate) {
-            await this.afterCreate(instanceData)
+        if (instance.afterCreate) {
+            await instance.afterCreate()
         }
 
-        return instanceData
+        return instance
     }
 
 
-    async read(query) {
-        if (this.beforeRead) {
-            await this.beforeRead(query)
+
+    async read() {
+        let instance = await this.constructor.read(this)
+        Object.assign(this, instance)
+    }
+    
+    static async read(query) {
+        let instance = query.constructor === this ? query : new this(query)
+        if (instance.beforeRead) {
+            await instance.beforeRead()
         }
 
-        let instanceData = await this.constructor.adapter.read(query)
+        instance = new this(await this.adapter.read(query))
 
-        if (this.afterRead) {
-            await this.afterRead(instanceData)
+        if (instance.afterRead) {
+            await instance.afterRead()
         }
 
-        return instanceData
+        return instance
     }
 
 
-    async update(query, data) {
-        if (this.beforeUpdate) {
-            await this.beforeUpdate(query, data)
+
+    async update(data) {
+        let instance = await this.constructor.update(this, data)
+        Object.assign(this, instance)
+    }
+
+    static async update(query, data) {
+        let instance = query.constructor === this ? query : new this(query)
+        if (instance.beforeUpdate) {
+            await instance.beforeUpdate(data)
         }
 
-        let instanceData = await this.constructor.adapter.update(query, data)
-
-        if (this.afterUpdate) {
-            await this.afterUpdate(instanceData)
+        instance = new this(await this.adapter.update(instance, data))
+        
+        if (instance.afterUpdate) {
+            await instance.afterUpdate()
         }
 
-        return instanceData
+        return instance
     }
 
 
-    async delete(query) {
-        if (this.beforeDelete) {
-            await this.beforeDelete(query)
+
+    async delete() {
+        return await this.constructor.delete(this)
+    }
+
+    static async delete(query) {
+        let instance = query.constructor === this ? query : new this(query)
+        if (instance.beforeDelete) {
+            await instance.beforeDelete()
         }
 
-        let instanceData = await this.constructor.adapter.delete(query)
+        instance = new this(await this.adapter.delete(instance))
 
-        if (this.afterDelete) {
-            await this.afterDelete(instanceData)
+        if (instance.afterDelete) {
+            await instance.afterDelete()
         }
-        // This may be empty depending on adapter
-        return instanceData
+        // should this return boolean from adapter?
+        return instance
     }
 
 }

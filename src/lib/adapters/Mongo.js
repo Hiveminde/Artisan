@@ -1,11 +1,15 @@
-import mongoose from 'mongoose'
+const mongoose = require('mongoose')
 
 
-class Mongo {
+module.exports = class Mongo {
 
     constructor(config) {
         Object.assign(this, config)
         this.collection = mongoose.connections[0].collections[this.klass]
+
+        if (!this.collection) {
+            this.collection = mongoose.createSchema('User', this.schema)
+        }
     }
 
     async create(dataArray) {
@@ -25,3 +29,12 @@ class Mongo {
     }
 
 }
+
+
+new Mongo({
+    klass: 'User',
+    schema: {
+        username: String,
+        email: String
+    }
+})
