@@ -1,20 +1,16 @@
-import Artisan from 'Artisan'
-import Comment from './Comment'
+const Artisan = require('../../src/lib/Artisan')
 
-export class User extends Artisan {
+class User extends Artisan {
 
     constructor(attrs) {
         super({
             adapters: {
                 client: 'HTTP',
-                server: 'Mongo'
+                server: 'NOOP'
             },
             schema: {
                 username: Artisan.types.String,
                 email: Artisan.types.String
-            },
-            comments: {
-                hasMany: Comment
             }
         })
 
@@ -27,8 +23,6 @@ export class User extends Artisan {
         }
     }
 
-    addFriend(user) {
-        this.update({friends: {$push: user}})
-    }
-
 }
+
+module.exports = User
