@@ -26,7 +26,7 @@ class Artisan {
     static async config(options) {
         if (!this.adapter) {
             this.adapter = await (new options.adapter({
-                klass: this.constructor.name,
+                klass: this.name,
                 schema: this.schema()
             }))
         }
