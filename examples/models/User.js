@@ -1,4 +1,8 @@
-const Artisan = require('../../src/lib/Artisan')
+try {
+    Artisan = require('../../src/lib/Artisan')
+} catch (error) {
+    console.error(error.toString())
+}
 
 class User extends Artisan {
 
@@ -25,4 +29,9 @@ class User extends Artisan {
 
 }
 
-module.exports = User
+
+if (Artisan.environment() === 'SERVER') {
+    module.exports = User
+} else {
+    window.User = User
+}

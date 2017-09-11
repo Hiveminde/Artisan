@@ -180,4 +180,9 @@ class Artisan {
 
 }
 
-module.exports = Artisan
+
+if (Artisan.environment() === 'SERVER') {
+    module.exports = Artisan
+} else {
+    window.Artisan = Artisan
+}

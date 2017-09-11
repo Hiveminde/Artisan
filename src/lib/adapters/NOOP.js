@@ -22,4 +22,8 @@ class NOOP {
 
 }
 
-module.exports = NOOP
+if (typeof window === 'undefined') {
+    module.exports = NOOP
+} else {
+    window.NOOP = NOOP
+}
