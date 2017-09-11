@@ -1,5 +1,9 @@
 class Artisan {
 
+    constructor(attrs) {
+        Object.assign(this, attrs)
+    }
+
     static get types() {
         return {
             String: String,
@@ -19,14 +23,12 @@ class Artisan {
         )
     }
 
-
-
-    constructor(config) {
-        if (!this.constructor.adapter) {
-            let adapter = require(`./adapters/${config.adapters[Artisan.environment().toLowerCase()]}`)
-            this.constructor.adapter = new adapter({
-                klass: this.constructor.name
-            })
+    static async config(options) {
+        if (!this.adapter) {
+            this.adapter = await (new options.adapter({
+                klass: this.constructor.name,
+                schema: this.schema()
+            }))
         }
     }
 

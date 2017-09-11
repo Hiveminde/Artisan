@@ -1,7 +1,11 @@
-const User = require('../examples/models/User');
-
-
 (async () => {
+
+    const User = require('../examples/models/User')
+    await User.config({
+        adapter: require('../src/lib/adapters/NOOP')
+    })
+
+
 
     console.log('<----- BEGIN TESTS ----->')
 
