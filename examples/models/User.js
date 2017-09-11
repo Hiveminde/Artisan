@@ -1,24 +1,22 @@
 try {
     Artisan = require('../../src/lib/Artisan')
 } catch (error) {
-    console.error(error.toString())
+    console.info(error.toString())
 }
+
+
 
 class User extends Artisan {
 
     constructor(attrs) {
-        super({
-            adapters: {
-                client: 'HTTP',
-                server: 'NOOP'
-            },
-            schema: {
-                username: Artisan.types.String,
-                email: Artisan.types.String
-            }
-        })
+        super(attrs)
+    }
 
-        Object.assign(this, attrs)
+    static schema() {
+        return {
+            username: Artisan.types.String,
+            email: Artisan.types.String
+        }
     }
 
     beforeCreate() {
@@ -28,6 +26,7 @@ class User extends Artisan {
     }
 
 }
+
 
 
 if (Artisan.environment() === 'SERVER') {
