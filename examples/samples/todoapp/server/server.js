@@ -5,6 +5,7 @@ import User from '../models/User'
 import Blog from '../models/Blog'
 import Comment from '../models/Comment'
 
+import Task from './Task'
 let app = express()
 let port = process.env.PORT || 5000
 
@@ -26,6 +27,11 @@ app.get('/User', async (req, res, next) => {
     res.send()
 }).delete('/User', async (req, res, next) => {
     res.body = await User.delete(req.query)
+    res.send()
+})
+
+app.get('/Task', async (req, res, next) => {
+    res.body = await Task.read(req.params)
     res.send()
 })
 

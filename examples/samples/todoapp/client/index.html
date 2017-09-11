@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Todo App</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js"></script>
+		<script src="main.js"></script>
+	</head>
+	<body>
+    <span id="errorMsg" class="text-danger"></span>
+
+		<div id="todo">
+			<h1>Todo List</h1>
+      <ul id="taskList">
+      </ul>
+      <div id="mods">
+        <input type="text" id="title" placeholder="Todo here:">
+        <button id="add" onclick="window.submit(this)">ADD</button>
+        <button>CLEAR OLD TODOS</button>
+      </div>
+		</div>
+	</body>
+</html>
