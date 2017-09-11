@@ -1,4 +1,4 @@
-module.exports = class Artisan {
+class Artisan {
 
     static get types() {
         return {
@@ -13,7 +13,9 @@ module.exports = class Artisan {
                 'CLIENT' :
             (typeof process !== 'undefined' ?
                 'SERVER'
-            : 'UNKOWN')
+            :
+                'UNKOWN'
+            )
         )
     }
 
@@ -31,88 +33,151 @@ module.exports = class Artisan {
 
 
     async create() {
-        let instance = await this.constructor.create(this)
-        Object.assign(this, instance)
+        if (this.beforeCreate) {
+            await this.beforeCreate()
+        }
+
+        let instances = await this.constructor.create([this])
+
+        if (this.afterCreate) {
+            await this.afterCreate()
+        }
+
+        Object.assign(this, instances[0])
     }
 
-    static async create(data) {
-        let instance = data.constructor === this ? data : new this(data)
-        if (instance.beforeCreate) {
-            await instance.beforeCreate()
+    static async create(writeData) {
+        let instances = writeData.map((data) => data.constructor === this ? data : new this(data))
+
+        // Static before hook
+        if (this.beforeCreate) {
+            await this.beforeCreate(instances)
         }
 
-        instance = new this(await this.adapter.create(data))
+        // Make adapter call
+        let outputData = await this.adapter.create(instances)
 
-        if (instance.afterCreate) {
-            await instance.afterCreate()
+        instances = outputData.map((data) => new this(data))
+
+        // Static after hook
+        if (this.afterCreate) {
+            await this.afterCreate(instances)
         }
 
-        return instance
+        return instances
     }
 
 
 
     async read() {
-        let instance = await this.constructor.read(this)
-        Object.assign(this, instance)
-    }
-    
-    static async read(query) {
-        let instance = query.constructor === this ? query : new this(query)
-        if (instance.beforeRead) {
-            await instance.beforeRead()
+        if (this.beforeRead) {
+            await this.beforeRead()
         }
 
-        instance = new this(await this.adapter.read(query))
+        let instances = await this.constructor.read([this])
 
-        if (instance.afterRead) {
-            await instance.afterRead()
+        if (this.afterRead) {
+            await this.afterRead()
         }
 
-        return instance
+        Object.assign(this, instances[0])
     }
 
+    static async read(queryData) {
+        let instances = queryData.map((data) => data.constructor === this ? data : new this(data))
 
+        // Static before hook
+        if (this.beforeRead) {
+            await this.beforeRead(instances)
+        }
 
-    async update(data) {
-        let instance = await this.constructor.update(this, data)
-        Object.assign(this, instance)
+        // Make adapter call
+        let outputData = await this.adapter.read(instances)
+
+        instances = outputData.map((data) => new this(data))
+
+        // Static after hook
+        if (this.afterRead) {
+            await this.afterRead(instances)
+        }
+
+        return instances
     }
 
-    static async update(query, data) {
-        let instance = query.constructor === this ? query : new this(query)
-        if (instance.beforeUpdate) {
-            await instance.beforeUpdate(data)
+
+
+    async update(writeData) {
+        if (this.beforeUpdate) {
+            await this.beforeUpdate(writeData)
         }
 
-        instance = new this(await this.adapter.update(instance, data))
-        
-        if (instance.afterUpdate) {
-            await instance.afterUpdate()
+        let instances = await this.constructor.update([this], [writeData])
+
+        if (this.afterUpdate) {
+            await this.afterUpdate()
         }
 
-        return instance
+        Object.assign(this, instances[0])
+    }
+
+    static async update(queryData, writeData) {
+        let instances = queryData.map((data) => data.constructor === this ? data : new this(data))
+
+        // Static before hook
+        if (this.beforeUpdate) {
+            await this.beforeUpdate(instances)
+        }
+
+        // Make adapter call
+        let outputData = await this.adapter.update(instances, writeData)
+
+        instances = outputData.map((data) => new this(data))
+
+        // Static after hook
+        if (this.afterUpdate) {
+            await this.afterUpdate(instances)
+        }
+
+        return instances
     }
 
 
 
     async delete() {
-        return await this.constructor.delete(this)
+        if (this.beforeDelete) {
+            await this.beforeDelete()
+        }
+
+        let instances = await this.constructor.delete([this])
+
+        if (this.afterDelete) {
+            await this.afterDelete()
+        }
+
+        Object.assign(this, instances[0])
     }
 
-    static async delete(query) {
-        let instance = query.constructor === this ? query : new this(query)
-        if (instance.beforeDelete) {
-            await instance.beforeDelete()
+    static async delete(queryData) {
+        let instances = queryData.map((data) => data.constructor === this ? data : new this(data))
+
+        // Static before hook
+        if (this.beforeDelete) {
+            await this.beforeDelete(instances)
         }
 
-        instance = new this(await this.adapter.delete(instance))
+        // Make adapter call
+        let outputData = await this.adapter.delete(instances)
 
-        if (instance.afterDelete) {
-            await instance.afterDelete()
+        instances = outputData.map((data) => new this(data))
+
+        // Static after hook
+        if (this.afterDelete) {
+            await this.afterDelete(instances)
         }
-        // should this return boolean from adapter?
-        return instance
+
+        return instances
     }
 
 }
+
+module.exports = Artisan

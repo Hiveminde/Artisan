@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 
-module.exports = class Mongo {
+class Mongo {
 
     constructor(config) {
         Object.assign(this, config)
@@ -30,11 +30,13 @@ module.exports = class Mongo {
 
 }
 
+module.exports = Mongo
 
-new Mongo({
-    klass: 'User',
-    schema: {
-        username: String,
-        email: String
-    }
-})
+
+// new Mongo({
+//     klass: 'User',
+//     schema: {
+//         username: String,
+//         email: String
+//     }
+// })
