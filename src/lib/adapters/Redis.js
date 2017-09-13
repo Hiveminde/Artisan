@@ -20,7 +20,7 @@ class Redis {
         return await this.collection.put(queryArray, dataArray)
     }
 
-    async delete(queryArray) {
+    async destroy(queryArray) {
         return await this.collection.del(queryArray)
     }
 

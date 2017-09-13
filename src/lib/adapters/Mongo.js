@@ -24,8 +24,8 @@ class Mongo {
         return await this.collection.update(queryArray, dataArray)
     }
 
-    async delete(queryArray) {
-        return await this.collection.delete(queryArray)
+    async destroy(queryArray) {
+        return await this.collection.destroy(queryArray)
     }
 
 }

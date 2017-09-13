@@ -20,7 +20,7 @@ class Socket {
         return await this.sockets.put(queryArray, dataArray)
     }
 
-    async delete(queryArray) {
+    async destroy(queryArray) {
         return await this.sockets.del(queryArray)
     }
 

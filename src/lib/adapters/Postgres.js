@@ -20,8 +20,8 @@ class Postgres {
         return await this.table.update(queryArray, dataArray)
     }
 
-    async delete(queryArray) {
-        return await this.table.delete(queryArray)
+    async destroy(queryArray) {
+        return await this.table.destroy(queryArray)
     }
 
 }

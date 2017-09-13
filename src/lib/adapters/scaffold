@@ -20,8 +20,8 @@ class {{scaffold.name}} {
         return await this.{{scaffold.protocol}}.{{scaffold.crud.update}}(queryArray, dataArray)
     }
 
-    async delete(queryArray) {
-        return await this.{{scaffold.protocol}}.{{scaffold.crud.delete}}(queryArray)
+    async destroy(queryArray) {
+        return await this.{{scaffold.protocol}}.{{scaffold.crud.destroy}}(queryArray)
     }
 
 }

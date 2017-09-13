@@ -143,36 +143,36 @@ class Artisan {
 
 
 
-    async delete() {
-        if (this.beforeDelete) {
-            await this.beforeDelete()
+    async destroy() {
+        if (this.beforeDestroy) {
+            await this.beforeDestroy()
         }
 
-        let instances = await this.constructor.delete([this])
+        let instances = await this.constructor.destroy([this])
 
-        if (this.afterDelete) {
-            await this.afterDelete()
+        if (this.afterDestroy) {
+            await this.afterDestroy()
         }
 
         Object.assign(this, instances[0])
     }
 
-    static async delete(queryData) {
+    static async destroy(queryData) {
         let instances = queryData.map((data) => data.constructor === this ? data : new this(data))
 
         // Static before hook
-        if (this.beforeDelete) {
-            await this.beforeDelete(instances)
+        if (this.beforeDestroy) {
+            await this.beforeDestroy(instances)
         }
 
         // Make adapter call
-        let outputData = await this.adapter.delete(instances)
+        let outputData = await this.adapter.destroy(instances)
 
         instances = outputData.map((data) => new this(data))
 
         // Static after hook
-        if (this.afterDelete) {
-            await this.afterDelete(instances)
+        if (this.afterDestroy) {
+            await this.afterDestroy(instances)
         }
 
         return instances
