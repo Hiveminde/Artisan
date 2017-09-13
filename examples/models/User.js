@@ -21,12 +21,15 @@ class User extends Artisan {
 
     beforeCreate() {
         if (!this.email.match(/@{1}/g)) {
-            throw new Error('Please enter valid email address')
+            throw new Error(User.messages.invalidEmail)
         }
     }
 
 }
 
+User.messages = {
+    invalidEmail: 'Please enter a valid email address.'
+}
 
 
 if (Artisan.environment() === 'SERVER') {
