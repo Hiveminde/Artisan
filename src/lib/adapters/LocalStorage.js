@@ -49,7 +49,7 @@ class LocalStorage {
     }
 
     // Removes key and calls watcher. Does not remove watcher. To remove key and watcher see `LocalStorage._clear(k)`
-    delete(k) {
+    destroy(k) {
         if (this._notAKey(k)) return undefined
         localStorage.removeItem(k)
         if (this._callWatcher(k, null) === false) return false
@@ -75,7 +75,7 @@ class LocalStorage {
     _clear(k) {
         if (k) {
             this._unwatch(k)
-            this.delete(k)
+            this.destroy(k)
             var key = this.keys.indexOf(k)
             if (key >= 0) this.keys.splice(key, 1)
         } else {
