@@ -31,7 +31,7 @@ class HTTP {
         })).json()
     }
 
-    async delete(queryArray) {
+    async destroy(queryArray) {
         return await (await fetch(this.baseRoute, {
             method: 'DELETE',
             data: queryArray

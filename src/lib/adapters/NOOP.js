@@ -16,7 +16,7 @@ class NOOP {
         return await queryArray.map((q, i) => Object.assign(q, dataArray[i]))
     }
 
-    async delete(queryArray) {
+    async destroy(queryArray) {
         return await queryArray
     }
 

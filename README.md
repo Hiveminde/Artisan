@@ -32,7 +32,7 @@ An unopinionated model layer / ORM for full-stack Javascript Applications (web, 
         - `create([{data}])`
         - `read([{queries}])`
         - `update([{queries}], [{data}])`
-        - `delete([{queries}], [{data}])`
+        - `destroy([{queries}], [{data}])`
     - Proposed
 2. Model: Query Methods 
     - Standard
@@ -42,8 +42,8 @@ An unopinionated model layer / ORM for full-stack Javascript Applications (web, 
         - `read([{queries}])` -> returns array of instances (empty array returns all instances)
         - `update({query}, {data})` -> updates one instance
         - `update([{queries}], [{data}])` -> updates many instances (empty query array updates all instances)
-        - `delete({queries}, {data})` -> deletes one instance
-        - `delete([{queries}], [{data}])` -> deletes many instances (empty query array updates all instances)
+        - `destroy({queries}, {data})` -> destroys one instance
+        - `destroy([{queries}], [{data}])` -> destroys many instances (empty query array updates all instances)
     - Proposed
         - `first()` -> returns first instance of model
         - `last()` -> returns last instance of model
@@ -55,8 +55,8 @@ An unopinionated model layer / ORM for full-stack Javascript Applications (web, 
         - `afterRead()`
         - `beforeUpdate()`
         - `afterUpdate()`
-        - `beforeDelete()`
-        - `afterDelete()`
+        - `beforeDestroy()`
+        - `afterDestroy()`
     - Proposed
         - `beforeSave()`
         - `afterSave()`

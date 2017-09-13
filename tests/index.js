@@ -52,11 +52,11 @@ const User = require('../examples/models/User');
         let users;
 
         joe = new User({ username: 'twincharged', email: 'joe@hiveminde.com' })
-        await joe.delete()
-        console.log('<User>.delete --result-->', joe.username === 'twincharged')
+        await joe.destroy()
+        console.log('<User>.destroy --result-->', joe.username === 'twincharged')
 
-        users = await User.delete([{ username: 'twincharged', email: 'joe@hiveminde.com' }])
-        console.log('User.delete --result-->', users[0].username === 'twincharged')
+        users = await User.destroy([{ username: 'twincharged', email: 'joe@hiveminde.com' }])
+        console.log('User.destroy --result-->', users[0].username === 'twincharged')
     })()
 
     console.log('<----- END TESTS ----->')

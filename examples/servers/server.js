@@ -25,7 +25,7 @@ app.get('/User', async (req, res, next) => {
     res.body = await User.update(req.query, req.body)
     res.send()
 }).delete('/User', async (req, res, next) => {
-    res.body = await User.delete(req.query)
+    res.body = await User.destroy(req.query)
     res.send()
 })
 
