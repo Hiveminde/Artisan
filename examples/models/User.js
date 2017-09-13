@@ -32,6 +32,7 @@ User.messages = {
 }
 
 
+
 if (Artisan.environment() === 'SERVER') {
     module.exports = User
 } else {
